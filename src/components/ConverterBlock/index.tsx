@@ -6,13 +6,21 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography'
+import { inject, observer } from 'mobx-react' 
+import CurrenciesStore from '../../stores/currenciesStore';
+
 
 type IConverterBlock = { 
     classes: any;
+    currenciesStore?: CurrenciesStore;
 }
 
 
-const ConverterBlock: React.FC<IConverterBlock> = ({ classes }) => { 
+const ConverterBlock: React.FC<IConverterBlock> = inject('currenciesStore')
+    (observer(({ classes, currenciesStore }) => { 
+
+    const tokens: string[] =  currenciesStore!.getItems.map(token => token.name);
+    console.log(tokens)
     return (
         <Paper className={classes.paper}>
         <div className={classes.cryptoInputBox}>
@@ -26,11 +34,11 @@ const ConverterBlock: React.FC<IConverterBlock> = ({ classes }) => {
       <Select
       labelId="demo-simple-select-label"
       id="demo-simple-select"
-      value={10}    
+      value={tokens[1]}    
       >
-      <MenuItem value={10}>Ten</MenuItem>
-      <MenuItem value={20}>Twenty</MenuItem>
-      <MenuItem value={30}>Thirty</MenuItem>
+          {
+              tokens.map(name => (<MenuItem value={name}>{name}</MenuItem>))
+          }
      </Select>
       </FormControl>
         </div>
@@ -45,11 +53,11 @@ const ConverterBlock: React.FC<IConverterBlock> = ({ classes }) => {
       <Select
       labelId="demo-simple-select-label"
       id="demo-simple-select"
-      value={10}
+      value={tokens[0]}
       >
-      <MenuItem value={10}>Ten</MenuItem>
-      <MenuItem value={20}>Twenty</MenuItem>
-      <MenuItem value={30}>Thirty</MenuItem>
+          {
+              tokens.map(name => (<MenuItem value={name}>{name}</MenuItem>))
+          }
      </Select>
       </FormControl>
         </div>
@@ -58,6 +66,6 @@ const ConverterBlock: React.FC<IConverterBlock> = ({ classes }) => {
 </Typography>
       </Paper>
     )
-}
+}))
 
 export default ConverterBlock; 
