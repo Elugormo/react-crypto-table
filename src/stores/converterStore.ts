@@ -1,13 +1,6 @@
-// import { observable, computed, action } from 'mobx'
-// import { TToken } from '../types';
-
 import { observable, computed, action } from 'mobx'
-import { TToken } from '../types';
+import { TToken, TSelectedToken } from '../types';
 
-type TSelectedToken = { 
-    name: string;
-    price: number;
-}
 
 
 class ConverterStore { 
@@ -17,23 +10,19 @@ class ConverterStore {
     };
 
     @computed
-    get getItems() { 
+    get getToken() { 
         return this.selectedToken;
     }
 
 
     @action
-    set setSelectedToken(token : TToken) { 
+    setSelectedToken(token : TToken) { 
         this.selectedToken = {
             name: token.name, 
             price: token.price
         };
     }
 
-
-    @action
-    setItems = (items: TToken[]): void => {
-    }
 
    
 }

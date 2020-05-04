@@ -1,7 +1,7 @@
 import { observable, computed, action } from 'mobx'
 import { TToken, TTokenDiff } from '../types';
 import axios from 'axios'
-
+import stores from '.';
 
 
 class CurrenciesStore { 
@@ -33,6 +33,9 @@ class CurrenciesStore {
           {},
         );
         this.items = items;
+        setTimeout(() => {
+            this.diffObj = {};
+          }, 10000);
     }
 
     @action 
@@ -52,9 +55,7 @@ class CurrenciesStore {
                 });  
                 console.log(tokens)
                 this.setItems(tokens);
-                setTimeout(() => {
-                    this.diffObj = {};
-                  }, 10000);
+                stores.converterStore.setSelectedToken(tokens[0])
          })
     } 
 

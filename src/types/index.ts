@@ -7,3 +7,8 @@ export type TToken = {
   }
 
 export type TTokenDiff = {[key: string] : string};
+
+export type TSelectedToken = { 
+    name: string;
+    price: number;
+}

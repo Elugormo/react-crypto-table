@@ -9,15 +9,17 @@ import TableRow from '@material-ui/core/TableRow';
 import { observer, inject } from 'mobx-react'
 import { TToken, TTokenDiff } from '../../types/index'
 import CurrenciesStore from '../../stores/currenciesStore';
+import ConverterStore from '../../stores/converterStore';
 
 type ICryptoTable = { 
     classes: any;
     currenciesStore?: CurrenciesStore; 
+    converterStore?: ConverterStore;
 }
 
 
 
-const CryptoTable = inject('currenciesStore', 'converterStore')(observer(({ classes, currenciesStore } : ICryptoTable) => { 
+const CryptoTable = inject('currenciesStore', 'converterStore')(observer(({ classes, currenciesStore, converterStore } : ICryptoTable) => { 
            const items : TToken[] = currenciesStore!.getItems;
            const diffObj : TTokenDiff = currenciesStore!.getDiffObj; 
 
@@ -31,6 +33,12 @@ const CryptoTable = inject('currenciesStore', 'converterStore')(observer(({ clas
                }
            }, []);
            
+
+           const onRowclick = (token : TToken) => { 
+               if(converterStore)
+                   converterStore.setSelectedToken(token);
+           }
+
             return(
                 <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
@@ -45,7 +53,7 @@ const CryptoTable = inject('currenciesStore', 'converterStore')(observer(({ clas
                   </TableHead>
                   <TableBody>
                     {!items.length ? "Loading" : items.map( (item : TToken) => (
-                      <TableRow className={classes.rowCurrency} hover={true}  key={item.name}>
+                      <TableRow onClick={() => onRowclick(item)} className={classes.rowCurrency} hover={true}  key={item.name}>
                         <TableCell align="left"><img className={classes.currencyImgIcon} src={item.imageUrl} alt="Token icon"/></TableCell>
                         <TableCell align="left">{item.name}</TableCell>
                         <TableCell align="left">{item.fullName}</TableCell>
