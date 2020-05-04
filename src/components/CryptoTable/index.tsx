@@ -16,6 +16,7 @@ type ICryptoTable = {
 }
 
 
+
 const CryptoTable = inject('currenciesStore')(observer(({ classes, currenciesStore } : ICryptoTable) => { 
            const items : TToken[] = currenciesStore!.getItems;
             
@@ -42,7 +43,7 @@ const CryptoTable = inject('currenciesStore')(observer(({ classes, currenciesSto
                         <TableCell align="left"><img className={classes.currencyImgIcon} src={item.imageUrl} alt="Token icon"/></TableCell>
                         <TableCell align="left">{item.name}</TableCell>
                         <TableCell align="left">{item.fullName}</TableCell>
-                        <TableCell align="left">${item.price}</TableCell>
+                        <TableCell className={classes.columnRed} align="left">${item.price}</TableCell>
                         <TableCell align="left">${item.volume24Hour}</TableCell>
                       </TableRow>
                     ))}

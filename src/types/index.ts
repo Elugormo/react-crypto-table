@@ -5,3 +5,5 @@ export type TToken = {
     price: number;
     volume24Hour: number; 
   }
+
+export type TTokenDiff = {[key: string] : string};

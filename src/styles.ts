@@ -28,6 +28,12 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 18, 
       height: 18, 
       borderRadius: 30
+    }, 
+    columnGreen: {
+      backgroundColor: '#d8ffc4'
+    }, 
+    columnRed: { 
+      backgroundColor: '#ffdada'
     }
   }),
 );
