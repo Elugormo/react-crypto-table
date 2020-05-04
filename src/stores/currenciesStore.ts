@@ -18,18 +18,21 @@ class CurrenciesStore {
     }
 
     @action
-    setItems = (items: TToken[]) : void => { 
+    setItems = (items: TToken[]): void => {
+        this.diffObj = this.diffCurrencies(this.items, items).reduce(
+          (initObj: TTokenDiff, obj: TToken) => {
+            const newObj: TToken = items.find(o => o.name === obj.name)!;
+            const oldObj: TToken = this.items.find(itemObj => itemObj.name === newObj.name)!;
+            const color: string =
+              newObj.price === oldObj.price ? '' : newObj.price > oldObj.price ? 'green' : 'red';
+    
+            initObj[newObj.name] = color;
+    
+            return initObj;
+          },
+          {},
+        );
         this.items = items;
-        this.diffObj = this.diffCurrencies(this.items, items).reduce((init : TTokenDiff, newObj : TToken) => { 
-            const obj : TToken = items.find(o => o.name === newObj.name) || newObj;
-            const oldObj : TToken = this.items.find(itemsObj => itemsObj.name === obj.name) || obj;
-            const color : string = 
-                obj.price === oldObj.price ? '' : obj.price > oldObj.price ? 'green' : 'red';
-
-            init[obj.name] = color; 
-
-            return init;
-        }, {})
     }
 
     @action 
@@ -48,7 +51,10 @@ class CurrenciesStore {
                   return obj;
                 });  
                 console.log(tokens)
-                this.items = tokens;
+                this.setItems(tokens);
+                setTimeout(() => {
+                    this.diffObj = {};
+                  }, 10000);
          })
     } 
 

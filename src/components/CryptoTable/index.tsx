@@ -7,7 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { observer, inject } from 'mobx-react'
-import { TToken } from '../../types/index'
+import { TToken, TTokenDiff } from '../../types/index'
 import CurrenciesStore from '../../stores/currenciesStore';
 
 type ICryptoTable = { 
@@ -17,12 +17,18 @@ type ICryptoTable = {
 
 
 
-const CryptoTable = inject('currenciesStore')(observer(({ classes, currenciesStore } : ICryptoTable) => { 
+const CryptoTable = inject('currenciesStore', 'converterStore')(observer(({ classes, currenciesStore } : ICryptoTable) => { 
            const items : TToken[] = currenciesStore!.getItems;
-            
+           const diffObj : TTokenDiff = currenciesStore!.getDiffObj; 
+
            useEffect(() => { 
-               if(currenciesStore)
+               if(currenciesStore) { 
                    currenciesStore.fetchTokens();
+               
+                   setInterval(() => { 
+                       currenciesStore.fetchTokens();
+                   }, 25 * 1000)
+               }
            }, []);
            
             return(
@@ -38,12 +44,12 @@ const CryptoTable = inject('currenciesStore')(observer(({ classes, currenciesSto
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {!items.length ? "Loading" : items.map( item => (
-                      <TableRow key={item.name}>
+                    {!items.length ? "Loading" : items.map( (item : TToken) => (
+                      <TableRow className={classes.rowCurrency} hover={true}  key={item.name}>
                         <TableCell align="left"><img className={classes.currencyImgIcon} src={item.imageUrl} alt="Token icon"/></TableCell>
                         <TableCell align="left">{item.name}</TableCell>
                         <TableCell align="left">{item.fullName}</TableCell>
-                        <TableCell className={classes.columnRed} align="left">${item.price}</TableCell>
+                        <TableCell className={diffObj[item.name] && classes[`${diffObj[item.name]}Column`]} align="left">${item.price}</TableCell>
                         <TableCell align="left">${item.volume24Hour}</TableCell>
                       </TableRow>
                     ))}

@@ -29,13 +29,19 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 18, 
       borderRadius: 30
     }, 
-    columnGreen: {
-      backgroundColor: '#d8ffc4'
+    redColumn: {
+      backgroundColor: '#d8ffc4',
+      transition: '0.4s ease-in-out', 
     }, 
-    columnRed: { 
-      backgroundColor: '#ffdada'
-    }
+    greenColumn: { 
+      backgroundColor: '#ffdada',
+      transition: '0.4s ease-in-out',
+    },
+    rowCurrency: { 
+      cursor: 'pointer',
+    }    
   }),
 );
+
 
 export default useStyles
