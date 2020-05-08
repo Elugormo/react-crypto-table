@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography'
 import { inject, observer } from 'mobx-react' 
 import CurrenciesStore from '../../stores/currenciesStore';
 import ConverterStore from '../../stores/converterStore';
-import { TSelectedToken } from '../../types';
 
 
 type IConverterBlock = { 
@@ -56,7 +55,7 @@ const ConverterBlock: React.FC<IConverterBlock> = inject('currenciesStore', 'con
     const [selectedToken, setSelectedToken] = useState('USD');    
     const tokens: string[] =  currenciesStore!.getItems.map(token => token.name);
     const inPrice = Number(converterStore?.getToken.price) || 0;
-    const outPrice = Number(currenciesStore!.getItems.find(obj => obj.name === selectedToken)?.price) || 29;
+    const outPrice = Number(currenciesStore!.getItems.find(obj => obj.name === selectedToken)?.price) || 1;
     const [state, dispatch] = useReducer(reducer, { 
         value1: '', 
         value2: '', 
@@ -128,8 +127,8 @@ const ConverterBlock: React.FC<IConverterBlock> = inject('currenciesStore', 'con
      </Select>
       </FormControl>
         </div>
-        <Typography variant="h5" component="h5">
-        29.70 Украинская гривна
+        <Typography variant="h6" component="h5">
+        1$ = 29.70 Украинская гривна
 </Typography>
       </Paper>
     )
